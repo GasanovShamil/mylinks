@@ -1,7 +1,3 @@
-<%@page import="beans.UserBean"%>
-<jsp:useBean id="user" class="beans.UserBean" scope="session"/>
-
-<% user = (UserBean) session.getAttribute("user"); %>
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -20,7 +16,7 @@
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
-					<strong><%=user.getName() %></strong> <span	class="glyphicon glyphicon-chevron-down"></span>
+					<strong>${ user.name }</strong> <span	class="glyphicon glyphicon-chevron-down"></span>
 			</a>
 				<ul class="dropdown-menu">
 					<li>
@@ -33,9 +29,9 @@
 								</div>
 								<div class="col-lg-8">
 									<p class="text-left">
-										<strong><%=user.getName()+" "+user.getSurname() %></strong>
+										<strong>${ user.name } ${ user.surname }</strong>
 									</p>
-									<p class="text-left small"><%=user.getLogin() %></p>
+									<p class="text-left small">${ user.login }</p>
 									<p class="text-left">
 										<a href="#" class="btn btn-primary btn-block btn-sm">Profile settings</a>
 									</p>

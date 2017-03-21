@@ -27,13 +27,11 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>7.0</version>
-			
 		</dependency>
 		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<version>1.2</version>
-			
 		</dependency>
 		<dependency>
 			<!-- JBoss/Weld Refrence Implementation for CDI on a Servlet Container -->
@@ -48,6 +46,13 @@
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>9.0.0.M17</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/jstl/jstl -->
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>mylinks</finalName>

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%-- <%@ page session="false" %> --%>
 <html>
   <head>
@@ -14,17 +16,14 @@
   </head>
 <body>
 
-<%
-/* HttpSession session = request.getSession(false); */
-if(/* session == null || */ session.getAttribute("user") == null){%>	
-	<%@ include file="navbarLogin.jsp"%>
-<%
-}else{
-%>
-	<%@ include file="navbarLogout.jsp"%>
-<%}%>
-
-
+<c:choose>
+    <c:when test="${empty user}">
+        <%@ include file="navbarLogin.jsp"%>
+    </c:when>    
+    <c:otherwise>
+       <%@ include file="navbarLogout.jsp"%>
+    </c:otherwise>
+</c:choose>
 	<br>
 	<div class="container-fluid">
 		<div class="panel panel-success">
@@ -35,20 +34,16 @@ if(/* session == null || */ session.getAttribute("user") == null){%>
 			</div>
 			<div class="container">
 			<br>
-				<%! String alert; %>
-				<% alert = (String)request.getAttribute("alert"); %>
-				<% if (alert != null) {%>
-				<div class="alert alert-warning col-md-4 col-md-offset-4">
-  					<%= alert%>
-				</div>
-				<%} %>
-				<%! String succes; %>
-				<% succes = (String)request.getAttribute("succes"); %>
-				<% if (succes != null) {%>
-				<div class="alert alert-success col-md-4 col-md-offset-4">
-  					<%= succes%>
-				</div>
-				<%} %>
+				<c:if test="${not empty alert}">
+    				<div class="alert alert-warning col-md-4 col-md-offset-4">
+  						${ alert }
+					</div>
+				</c:if>
+				<c:if test="${not empty succes}">
+    				<div class="alert alert-warning col-md-4 col-md-offset-4">
+  						${ succes }
+					</div>
+				</c:if>
 				<br>
 				<div class="row">
 					<div class="col-md-4 col-md-offset-4">    
