@@ -22,7 +22,6 @@ public class Database implements Serializable {
 	DataSource datasource;
 
 	public Database() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Connection getConnection() {

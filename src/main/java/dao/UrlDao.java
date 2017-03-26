@@ -38,7 +38,7 @@ public class UrlDao {
 	public boolean putUrl(UrlBean bean) {
 		try {
 			PreparedStatement pst = conn.prepareStatement(
-					"INSERT INTO url (shortUrl, longUrl, createDate, expireDate, nbClicks, userId) VALUES (?,?,?,?,?,?)");
+					"INSERT INTO url (shortUrl, longUrl, createDate, expireDate, password, nbClicks, userId, generic) VALUES (?,?,?,?,?,?,?,?)");
 
 			pst.setString(1, bean.getShortUrl());
 			pst.setString(2, bean.getLongUrl());
@@ -48,16 +48,23 @@ public class UrlDao {
 			} else {
 				pst.setNull(4, java.sql.Types.TIMESTAMP);
 			}
-			if (bean.getNbClicks() != null) {
-				pst.setInt(5, bean.getNbClicks());
+			if (bean.getPassword() != null) {
+				pst.setString(5, bean.getPassword());
 			} else {
-				pst.setNull(5, java.sql.Types.INTEGER);
+				pst.setNull(5, java.sql.Types.VARCHAR);
 			}
-			if (bean.getUserId() != null) {
-				pst.setInt(6, bean.getUserId());
+			if (bean.getNbClicks() != null) {
+				pst.setInt(6, bean.getNbClicks());
 			} else {
 				pst.setNull(6, java.sql.Types.INTEGER);
 			}
+			if (bean.getUserId() != null) {
+				pst.setInt(7, bean.getUserId());
+			} else {
+				pst.setNull(7, java.sql.Types.INTEGER);
+			}
+			pst.setBoolean(8, bean.isGeneric());
+			
 
 			pst.executeUpdate();
 
@@ -70,6 +77,7 @@ public class UrlDao {
 		}
 	}
 
+	
 	public UrlBean getUrl(String shortUrl) {
 		PreparedStatement pst;
 		UrlBean bean = null;
@@ -78,7 +86,7 @@ public class UrlDao {
 			pst.setString(1, shortUrl);
 			ResultSet res = pst.executeQuery();
 			if (res.next()) {
-				bean = new UrlBean(shortUrl, res.getString(2),res.getTimestamp(3) , res.getTimestamp(4), res.getInt(5), res.getInt(6));
+				bean = new UrlBean(shortUrl, res.getString("longUrl"),res.getTimestamp("createDate") , res.getTimestamp("expireDate"), res.getString("password"), res.getInt("nbClicks"), res.getInt("userId"), res.getBoolean("generic"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -86,4 +94,10 @@ public class UrlDao {
 		return bean;
 
 	}
+	
+	public boolean shortUrlExist(String shortUrl){
+		return getUrl(shortUrl) != null;
+	}
+	
+	
 }

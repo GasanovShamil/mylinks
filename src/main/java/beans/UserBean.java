@@ -9,7 +9,6 @@ public class UserBean {
 	private int userId;
 	
 	public UserBean() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getLogin() {

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<%-- <%@ page session="false" %> --%>
 <html>
   <head>
     <meta charset="utf-8">
@@ -26,41 +25,62 @@
 </c:choose>
 	<br>
 	<div class="container-fluid">
-		<div class="panel panel-success">
-			<div class="panel-heading" align="center">
-				<h4>
-					<b><font color="black" style="font-family: fantasy;">Create your short url:</font> </b>
-				</h4>
-			</div>
-			<div class="container">
-			<br>
-				<c:if test="${not empty alert}">
-    				<div class="alert alert-warning col-md-4 col-md-offset-4">
+	
+	<div class="panel-group col-md-10 col-md-offset-1">
+	<form action="createUrl" method=POST>
+    <div class="panel panel-success">
+      	<div class="panel-heading" align="center">Create your short URL</div>
+      <div class="panel-body">
+		<c:if test="${not empty alert}">
+    				<div class="alert alert-warning col-md-6 col-md-offset-3">
   						${ alert }
 					</div>
 				</c:if>
-				<c:if test="${not empty succes}">
-    				<div class="alert alert-warning col-md-4 col-md-offset-4">
-  						${ succes }
+				<c:if test="${not empty shortUrl}">
+    				<div class="alert alert-warning col-md-6 col-md-offset-3">
+  						<a href="${ shortUrl }">${ shortUrl }</a>
 					</div>
 				</c:if>
-				<br>
 				<div class="row">
-					<div class="col-md-4 col-md-offset-4">    
-						<form action="createUrl" method=POST>          
+					<div class="col-md-6 col-md-offset-3">    
+						          
 						    <div class="input-group">
-						      <input type="text" class="form-control" name="longUrl" >
+						      <input type="text" class="form-control" name="longUrl" required>
 						      <span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span>
 						    </div>
-						</form>
+						
 					</div>
 				</div>
+	</div>
+    </div>
+    <div class="panel panel-default">
+      	<div class="panel-heading" align="center">
+      	<a data-toggle="collapse" href="#collapse1">Advanced options</a>
+		</div>
+		<div id="collapse1" class="panel-collapse collapse">
+      <div class="panel-body">
+			<div class="row col-md-6 col-md-offset-3">
+				<div class="col-md-6">
+	    			<input type="text" name="personalUrl" class="form-control" placeholder="Personal url">
+	 			 </div>
+	 			 <div class="col-md-6">
+	    			<input type="password" name="urlPassword" class="form-control" placeholder="Password">
+	 			 </div>
 			</div>
-			<div class="panel-footer" align="center">
-				<font style="color: #111">Copyright @2017 <a href="#">mylinks.com</a>, All Rights Reserved.</font>
+			<div class="row col-md-6 col-md-offset-3">
+				<div class="col-md-6">
+	    			<input type="date" name="expireDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
+	 			 </div>
+	 			 <div class="col-md-6">
+	    			<input type="text" name="nbClick" class="form-control" placeholder="Click number">
+	 			 </div>
 			</div>
 		</div>
-	</div>
-
+    </div>
+    </div>
+    </form>
+  </div>
+  
+  </div>
 </body>
 </html>

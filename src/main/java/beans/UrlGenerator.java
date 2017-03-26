@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dao.Database;
+import dao.UrlDao;
 
 @Named
 @ApplicationScoped
@@ -20,6 +21,7 @@ public class UrlGenerator implements Serializable {
 	@Inject
 	Database db;
 
+	@Inject UrlDao urlDao;
 	private String url;
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +30,15 @@ public class UrlGenerator implements Serializable {
 	}
 
 	public String newUrl() {
+		boolean res = false;
+		do {
+			generateUrl();
+			res = urlDao.shortUrlExist(url);
+		} while (res);
+		return url;
+	}
+
+	private void generateUrl() {
 		char[] urls = url.toCharArray();
 		for (int i = urls.length - 1; i >= 0; i--) {
 			if (urls[i] < '9') {
@@ -50,8 +61,9 @@ public class UrlGenerator implements Serializable {
 			}
 		}
 		url = new String(urls);
-		return url;
 	}
+	
+	
 
 //	private boolean canIncrement(char[] charray) {
 //		for (int i = 0; i < charray.length - 1; i++) {
@@ -78,12 +90,12 @@ public class UrlGenerator implements Serializable {
 		Statement st;
 		try {
 			st = conn.createStatement();
-			ResultSet res = st.executeQuery("SELECT * from url WHERE createDate = (SELECT MAX(createDate) FROM url)");
+			ResultSet res = st.executeQuery("SELECT * from url WHERE createDate = (SELECT MAX(createDate) FROM url WHERE generic = true)");
 			if (!res.next()) {
 				System.out.println("there is no url in database. First url is set to : 11110");
-				url = "11110";
+				this.setUrl("11110");
 			} else {
-				this.setUrl(res.getString(1));
+				this.setUrl(res.getString("shortUrl"));
 				System.out.println("Last shortUrl in database is:" + this.getUrl());
 			}
 			res.close();

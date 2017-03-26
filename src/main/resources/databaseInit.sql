@@ -16,8 +16,10 @@ CREATE TABLE `url` (
 	`longUrl` varchar(500) NOT NULL,
 	`createDate` TIMESTAMP NOT NULL,
 	`expireDate` TIMESTAMP NULL,
+	`password` varchar(100),
 	`nbClicks` INT,
-	`userId` INT
+	`userId` INT,
+	`generic` BOOLEAN
 );
 
 CREATE TABLE `stats` (
@@ -32,6 +34,5 @@ CREATE TABLE `stats` (
 ALTER TABLE `url` ADD CONSTRAINT `url_fk0` FOREIGN KEY (`userId`) REFERENCES `users`(`userId`);
 
 ALTER TABLE `stats` ADD CONSTRAINT `stats_fk0` FOREIGN KEY (`shortUrl`) REFERENCES `url`(`shortUrl`);
-
 
 INSERT INTO users (name, surname, login, password) VALUES ('Name', 'Surname', 'admin@gmail.com', 'admin');
