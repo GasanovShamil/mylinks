@@ -35,6 +35,11 @@
 			<version>2.2.6.Final</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jboss</groupId>
+			<artifactId>jandex</artifactId>
+			<version>1.2.2.Final</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
