@@ -3,6 +3,8 @@ package mylinks;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -12,7 +14,6 @@ import dao.HibernateUtil;
 
 public class HibernateTest {
 
-	
 	
 	
 	public static void main(String[] args) {
@@ -31,7 +32,7 @@ public class HibernateTest {
 		UrlBean url = new UrlBean(shortUrl, longUrlString, createTimestamp, expireTimestamp, urlPasswordString, nbClickInt, userId, generic);
 		
 		//Get Session
-		SessionFactory sessionFactory = HibernateUtil.getSessionAnnotationFactory();
+		SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 		Session session = sessionFactory.getCurrentSession();
 		//start transaction
 		session.beginTransaction();

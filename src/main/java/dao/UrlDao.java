@@ -10,6 +10,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
 import beans.UrlBean;
 
 @Named
@@ -20,10 +24,13 @@ public class UrlDao {
 	Database db;
 
 	private Connection conn;
+	private SessionFactory sessionFactory;
+	private Session session;
 
 	@PostConstruct
 	public void init() {
 		conn = db.getConnection();
+		// sessionFactory = HibernateUtil.getSessionFactory();
 	}
 
 	@PreDestroy
@@ -33,7 +40,23 @@ public class UrlDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		// sessionFactory.close();
 	}
+
+	// public boolean putUrl(UrlBean bean) {
+	// try {
+	// session = sessionFactory.getCurrentSession();
+	// session.beginTransaction();
+	// session.save(bean);
+	// session.getTransaction().commit();
+	// } catch (HibernateException e) {
+	// System.out.println(e.getMessage());
+	// session.close();
+	// return false;
+	// }
+	// session.close();
+	// return true;
+	// }
 
 	public boolean putUrl(UrlBean bean) {
 		try {
@@ -64,7 +87,6 @@ public class UrlDao {
 				pst.setNull(7, java.sql.Types.INTEGER);
 			}
 			pst.setBoolean(8, bean.isGeneric());
-			
 
 			pst.executeUpdate();
 
@@ -77,7 +99,6 @@ public class UrlDao {
 		}
 	}
 
-	
 	public UrlBean getUrl(String shortUrl) {
 		PreparedStatement pst;
 		UrlBean bean = null;
@@ -86,7 +107,9 @@ public class UrlDao {
 			pst.setString(1, shortUrl);
 			ResultSet res = pst.executeQuery();
 			if (res.next()) {
-				bean = new UrlBean(shortUrl, res.getString("longUrl"),res.getTimestamp("createDate") , res.getTimestamp("expireDate"), res.getString("password"), res.getInt("nbClicks"), res.getInt("userId"), res.getBoolean("generic"));
+				bean = new UrlBean(shortUrl, res.getString("longUrl"), res.getTimestamp("createDate"),
+						res.getTimestamp("expireDate"), res.getString("password"), res.getInt("nbClicks"),
+						res.getInt("userId"), res.getBoolean("generic"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,10 +117,9 @@ public class UrlDao {
 		return bean;
 
 	}
-	
-	public boolean shortUrlExist(String shortUrl){
+
+	public boolean shortUrlExist(String shortUrl) {
 		return getUrl(shortUrl) != null;
 	}
-	
-	
+
 }
