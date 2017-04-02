@@ -2,6 +2,7 @@ package beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -117,6 +118,15 @@ public class UrlBean implements Serializable{
 
 	public void setGeneric(boolean generic) {
 		this.generic = generic;
+	}
+	
+	public boolean dateExpired(){	
+		return (expireDate == null)?false:this.expireDate.before(new Timestamp(new Date().getTime()));
+	}
+	
+	public void decreaseNbClicks(){
+		this.nbClicks--;
+		
 	}
 
 }

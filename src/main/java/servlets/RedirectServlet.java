@@ -24,30 +24,65 @@ public class RedirectServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.getRemoteAddr();
 		String shortUrl = (String) request.getAttribute("url");
+		if (shortUrl == null) request.getParameter("shortUrl");
+
 		if (shortUrl == null) {
 			response.sendRedirect("index");
 		} else if (shortUrl.endsWith("~s") || shortUrl.endsWith("!")) {
 			response.getWriter().append("TODO : here we will show stats for each short url");
 		} else {
 			UrlBean bean = urlDao.getUrl(shortUrl);
-			if (bean != null) {
-//				String ipAddress = request.getHeader("X-FORWARDED-FOR");
-//				if (ipAddress == null) {
-//					   ipAddress = request.getRemoteAddr();
-//				}
-				response.sendRedirect(bean.getLongUrl());
-			} else {
+			if (bean == null) {
 				request.setAttribute("alert", "There is no such url: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
+			} else if (bean.dateExpired()) {
+				request.setAttribute("alert", "Expired URL: " + shortUrl);
+				getServletContext().getRequestDispatcher("/").forward(request, response);
+			} else if (bean.getPassword() != null) {
+					request.setAttribute("shortUrl", shortUrl);
+					getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
+				
+			} else if (bean.getNbClicks() != null) {
+				if (bean.getNbClicks() <= 0) {
+					request.setAttribute("alert", "Number of visits on this URL was expired: " + shortUrl);
+					getServletContext().getRequestDispatcher("/").forward(request, response);
+				} else {
+					bean.decreaseNbClicks();
+					urlDao.updateUrl(bean);
+					response.sendRedirect(bean.getLongUrl());
+				}
+			} else {
+				response.sendRedirect(bean.getLongUrl());
 			}
 		}
 	}
 
+	// String ipAddress = request.getHeader("X-FORWARDED-FOR");
+	// if (ipAddress == null) {
+	// ipAddress = request.getRemoteAddr();
+	// }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		String shortUrl = (String) request.getParameter("url");
+		String urlPassword = (String) request.getParameter("urlPassword");
+		UrlBean bean = urlDao.getUrl(shortUrl);
+		if (urlPassword == null || !urlPassword.equals(bean.getPassword())) {
+			request.setAttribute("alert", "Wrong password! Please try again :)");
+			request.setAttribute("shortUrl", shortUrl);
+			getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
+		}else if (bean.getNbClicks() != null) {
+			if (bean.getNbClicks() <= 0) {
+				request.setAttribute("alert", "Number of visits on this URL was expired: " + shortUrl);
+				getServletContext().getRequestDispatcher("/").forward(request, response);
+			} else {
+				bean.decreaseNbClicks();
+				urlDao.updateUrl(bean);
+				response.sendRedirect(bean.getLongUrl());
+			}
+		} else {
+			response.sendRedirect(bean.getLongUrl());
+		}
 	}
 
 }
