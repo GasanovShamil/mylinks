@@ -3,16 +3,43 @@ package beans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+@Entity
+@Table(name="url", 
+	   uniqueConstraints={@UniqueConstraint(columnNames={"shortUrl"})})
 public class UrlBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@Column(name="shortUrl", nullable=false, unique=true, length=100)
 	private String shortUrl;
+	
+	@Column(name="longUrl", length=500, nullable=false)
 	private String longUrl;
+	
+	@Column(name="createDate", nullable=false)
 	private Timestamp createDate;
+	
+	@Column(name="expireDate", nullable=true)
 	private Timestamp expireDate;
+	
+	@Column(name="password", nullable=true)
 	private String password;
+	
+	@Column(name="nbClicks", nullable=true)
 	private Integer nbClicks;
+	
+	@Column(name="userId", nullable=true)
 	private Integer userId;
+	
+	@Column(name="generic", nullable=false)
 	private boolean generic;
 
 	public UrlBean() {}
