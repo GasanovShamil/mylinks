@@ -16,71 +16,53 @@ import javax.servlet.http.HttpSession;
 
 import beans.UserBean;
 import dao.Database;
+import dao.HibernateUtil;
+import dao.UserDao;
 
 /**
  * Servlet implementation class LoginServlet
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;   
-	
-	@Inject
-	Database db;
-  
-    public LoginServlet() {
-        super();
-    }
+	private static final long serialVersionUID = 1L;
 
-	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Inject
+	HibernateUtil hibernateUtil;
+
+	@Inject
+	UserDao userDao;
+
+	public LoginServlet() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.sendRedirect("index");
 	}
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		response.setContentType("text/html");
 		String login = request.getParameter("login");
-		String password = request.getParameter("password");	
-		try {
-			
-			Connection conn = db.getConnection();
-			String preparednSQLquery = "SELECT * FROM users WHERE login = ? "; 
-			PreparedStatement pst = conn.prepareStatement(preparednSQLquery );
-			pst.setString(1, login);
-			
-			ResultSet res = pst.executeQuery();
-			
-			if (!res.next()){
-				request.setAttribute("alert", "There is no such user");
-				getServletContext().getRequestDispatcher("/").forward(request,response);
-			}else{
-				if (res.getString(4).equals(login) && res.getString(5).equals(password)){
-					HttpSession session = request.getSession();
-					UserBean user = new UserBean();
-					user.setUserId(res.getInt(1));
-					user.setName(res.getString(2));
-					user.setSurname(res.getString(3));
-					user.setLogin(res.getString(4));
-					session.setAttribute("user", user);
-					session.setMaxInactiveInterval(30*60);
-					res.close();
-					conn.close();
-					response.sendRedirect("index");
-//					getServletContext().getRequestDispatcher("/").forward(request,response);
-				}else{
-					res.close();
-					conn.close();
-					request.setAttribute("alert", "Login or password are incorrect");
-					getServletContext().getRequestDispatcher("/").forward(request,response);
-				}
+		String password = request.getParameter("password");
+		UserBean user = userDao.getUser(login);
+		if (user == null) {
+			request.setAttribute("alert", "There is no such user");
+			getServletContext().getRequestDispatcher("/").forward(request, response);
+		} else {
+			if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
+				HttpSession session = request.getSession();
+				session.setAttribute("user", user);
+				session.setMaxInactiveInterval(30 * 60);
+				response.sendRedirect("index");
+				// getServletContext().getRequestDispatcher("/").forward(request,response);
+			} else {
+				request.setAttribute("alert", "Login or password are incorrect");
+				getServletContext().getRequestDispatcher("/").forward(request, response);
 			}
-			res.close();
-			conn.close();
-		} catch (SQLException e) { 
-			System.out.println("blabla");
-			e.printStackTrace();
-		}	
+		}
+
 	}
 
 }
-

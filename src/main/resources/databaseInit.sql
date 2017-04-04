@@ -8,7 +8,8 @@ CREATE TABLE `users` (
 	`name` varchar(100) NOT NULL,
 	`surname` varchar(100) NOT NULL,
 	`login` varchar(100) NOT NULL UNIQUE,
-	`password` varchar(100) NOT NULL
+	`password` varchar(100) NOT NULL,
+	`isAdmin` boolean
 );
 
 CREATE TABLE `url` (
@@ -35,4 +36,4 @@ ALTER TABLE `url` ADD CONSTRAINT `url_fk0` FOREIGN KEY (`userId`) REFERENCES `us
 
 ALTER TABLE `stats` ADD CONSTRAINT `stats_fk0` FOREIGN KEY (`shortUrl`) REFERENCES `url`(`shortUrl`);
 
-INSERT INTO users (name, surname, login, password) VALUES ('Name', 'Surname', 'admin@gmail.com', 'admin');
+INSERT INTO users (name, surname, login, password, isAdmin) VALUES ('Shamil', 'Gasanov', 'admin@gmail.com', 'admin', true);
