@@ -32,15 +32,15 @@
       	<div class="panel-heading" align="center">Create your short URL</div>
       <div class="panel-body">
 		<c:if test="${not empty alert}">
-    				<div class="alert alert-warning col-md-6 col-md-offset-3">
-  						${ alert }
-					</div>
-				</c:if>
-				<c:if test="${not empty shortUrl}">
-    				<div class="alert alert-warning col-md-6 col-md-offset-3">
-  						<a href="${ shortUrl }">${ shortUrl }</a>
-					</div>
-				</c:if>
+			<div class="alert alert-warning col-md-6 col-md-offset-3">
+				<p class="text-center">${ alert }</p>
+			</div>
+		</c:if>
+		<c:if test="${not empty shortUrl}">
+  				<div class="alert alert-warning col-md-6 col-md-offset-3">
+						<p class="text-center"><a href="${ shortUrl }">${ shortUrl }</a></p>
+			</div>
+		</c:if>
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">    
 						          

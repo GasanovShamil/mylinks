@@ -10,7 +10,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="users", 
-	   uniqueConstraints={@UniqueConstraint(columnNames={"userId", "login"})})
+	   uniqueConstraints={@UniqueConstraint(columnNames={"userId", "email"})})
 public class UserBean {
 
 	@Id
@@ -24,32 +24,40 @@ public class UserBean {
 	@Column(name="surname", nullable=false, length=100)
 	private String surname;	
 	
-	@Column(name="login", nullable=false, unique=true, length=100)
-	private String login;	
+	@Column(name="email", nullable=false, unique=true, length=100)
+	private String email;	
 	
 	@Column(name="password", nullable=false, length=100)
 	private String password;
 
+	@Column(name="confirmToken", nullable=false, length=100)
+	private String confirmToken;
+	
+	@Column(name="isConfirmed", nullable=false)
+	private boolean isConfirmed;
+	
 	@Column(name="isAdmin", nullable=false)
 	private boolean isAdmin;
 	
 	public UserBean() {
 	}
 
-	public UserBean(String name, String surname, String login, String password, boolean isAdmin){
+	public UserBean(String name, String surname, String email, String password,String confirmToken,boolean isConfirmed, boolean isAdmin){
 		this.name = name;
 		this.surname = surname;
-		this.login = login;
+		this.email = email;
 		this.password = password;
+		this.confirmToken = confirmToken;
+		this.isConfirmed = isConfirmed;
 		this.isAdmin = isAdmin;
 	}
 	
-	public String getLogin() {
-		return login;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
@@ -90,6 +98,22 @@ public class UserBean {
 
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public String getConfirmToken() {
+		return confirmToken;
+	}
+
+	public void setConfirmToken(String confirmToken) {
+		this.confirmToken = confirmToken;
+	}
+
+	public boolean isConfirmed() {
+		return isConfirmed;
+	}
+
+	public void setConfirmed(boolean isConfirmed) {
+		this.isConfirmed = isConfirmed;
 	}
 
 }

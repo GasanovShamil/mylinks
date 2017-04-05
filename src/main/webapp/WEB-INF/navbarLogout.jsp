@@ -11,8 +11,10 @@
 		<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav">
 			<li><a href="/mylinks">Home</a></li>
-			<li><a href="#">Page 1</a></li>
-			<li><a href="#">Page 2</a></li>
+			<li><a href="#">URLs</a></li>
+			<c:if test="${ user.isAdmin() }">
+    				<li><a href="#">Admin</a></li>
+			</c:if>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
@@ -31,7 +33,7 @@
 									<p class="text-left">
 										<strong>${ user.name } ${ user.surname }</strong>
 									</p>
-									<p class="text-left small">${ user.login }</p>
+									<p class="text-left small">${ user.email }</p>
 									<p class="text-left">
 										<a href="#" class="btn btn-primary btn-block btn-sm">Profile settings</a>
 									</p>

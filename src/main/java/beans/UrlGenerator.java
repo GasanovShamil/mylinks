@@ -11,8 +11,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import dao.Database;
 import dao.UrlDao;
+import utils.Database;
 
 @Named
 @ApplicationScoped

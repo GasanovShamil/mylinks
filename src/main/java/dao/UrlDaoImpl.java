@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import beans.UrlBean;
+import utils.HibernateUtil;
 
 @Named
 @RequestScoped

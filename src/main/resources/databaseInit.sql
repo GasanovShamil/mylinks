@@ -7,8 +7,10 @@ CREATE TABLE `users` (
 	`userId` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`name` varchar(100) NOT NULL,
 	`surname` varchar(100) NOT NULL,
-	`login` varchar(100) NOT NULL UNIQUE,
+	`email` varchar(100) NOT NULL UNIQUE,
 	`password` varchar(100) NOT NULL,
+	`confirmToken` varchar(100),
+	`isConfirmed` boolean,
 	`isAdmin` boolean
 );
 
@@ -36,4 +38,4 @@ ALTER TABLE `url` ADD CONSTRAINT `url_fk0` FOREIGN KEY (`userId`) REFERENCES `us
 
 ALTER TABLE `stats` ADD CONSTRAINT `stats_fk0` FOREIGN KEY (`shortUrl`) REFERENCES `url`(`shortUrl`);
 
-INSERT INTO users (name, surname, login, password, isAdmin) VALUES ('Shamil', 'Gasanov', 'admin@gmail.com', 'admin', true);
+INSERT INTO users (name, surname, email, password, confirmToken, isConfirmed, isAdmin) VALUES ('Shamil', 'Gasanov', 'admin@gmail.com', 'admin', null,true, true);

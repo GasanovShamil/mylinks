@@ -11,8 +11,6 @@
     <div class="collapse navbar-collapse" id="myNavbar">
     <ul class="nav navbar-nav">
       <li><a href="/mylinks">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown">
@@ -32,7 +30,7 @@
 										</div>
 										<div class="form-group">
 											 <label class="sr-only" for="inputEmail">Email address</label>
-											 <input type="email" name="login" class="form-control" id="inputEmail" placeholder="Email address" required>
+											 <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email address" required>
 										</div>
 										<div class="form-group">
 											 <label class="sr-only" for="inputPassword2">Password</label>
@@ -60,7 +58,7 @@
 								<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
 										<div class="form-group">
 											 <label class="sr-only" for="exampleInputEmail2">Email address</label>
-											 <input type="email" name="login" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
+											 <input type="email" name="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
 										</div>
 										<div class="form-group">
 											 <label class="sr-only" for="exampleInputPassword2">Password</label>

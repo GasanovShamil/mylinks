@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import beans.UserBean;
+import utils.HibernateUtil;
 
 @Named
 @RequestScoped
@@ -34,11 +35,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public UserBean getUser(String login) {
+	public UserBean getUser(String email) {
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(UserBean.class);
-		UserBean bean = (UserBean) criteria.add(Restrictions.eq("login", login)).uniqueResult();
+		UserBean bean = (UserBean) criteria.add(Restrictions.eq("email", email)).uniqueResult();
 		session.getTransaction().commit();
 		return bean;
 	}
