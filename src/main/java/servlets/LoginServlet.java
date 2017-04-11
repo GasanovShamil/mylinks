@@ -18,6 +18,7 @@ import beans.UserBean;
 import dao.UserDao;
 import utils.Database;
 import utils.HibernateUtil;
+import utils.PasswordUtil;
 
 /**
  * Servlet implementation class LoginServlet
@@ -51,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("alert", "There is no such user");
 			getServletContext().getRequestDispatcher("/").forward(request, response);
 		} else {
-			if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+			if (user.getEmail().equals(email) && user.getPassword().equals(PasswordUtil.getHash(password))) {
 				if (!user.isConfirmed()) {
 					request.setAttribute("alert", "Please check your email to confirm your address.");
 					getServletContext().getRequestDispatcher("/").forward(request, response);

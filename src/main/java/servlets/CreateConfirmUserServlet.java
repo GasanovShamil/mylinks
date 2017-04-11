@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import beans.UserBean;
 import dao.UserDao;
 import utils.MailUtil;
+import utils.PasswordUtil;
 
 @WebServlet("/createUser")
 public class CreateConfirmUserServlet extends HttpServlet {
@@ -60,7 +61,7 @@ public class CreateConfirmUserServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/").forward(request, response);
 		} else {
 			String confirmToken = UUID.randomUUID().toString().replaceAll("-", "");
-			UserBean user = new UserBean(name, surname, email, password, confirmToken, false, false);
+			UserBean user = new UserBean(name, surname, email, PasswordUtil.getHash(password), confirmToken, false, false);
 			userDao.putUser(user);
 			mailer.sendEmail(email, name, confirmToken, 0);
 			request.setAttribute("alert", "Please check your mail to confirm account.");

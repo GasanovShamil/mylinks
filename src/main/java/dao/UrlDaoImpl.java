@@ -1,14 +1,18 @@
 package dao;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 
 import beans.UrlBean;
 import utils.HibernateUtil;
@@ -147,4 +151,14 @@ public class UrlDaoImpl implements UrlDao {
 		return getUrl(shortUrl) != null;
 	}
 
+	@Override
+	public List<UrlBean> getUrlsByUserId(Integer userId) {
+		session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		Criteria criteria = session.createCriteria(UrlBean.class);
+		List<UrlBean> beans = criteria.add(Restrictions.eq("userId", userId)).list();
+		session.getTransaction().commit();
+		return beans;
+	}
+	
 }

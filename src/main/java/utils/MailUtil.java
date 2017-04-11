@@ -2,8 +2,7 @@ package utils;
 
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -13,7 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 @Named
-@ApplicationScoped
+@RequestScoped
 public class MailUtil {
 
 	static Properties mailServerProperties;

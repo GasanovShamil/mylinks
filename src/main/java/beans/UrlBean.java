@@ -129,4 +129,7 @@ public class UrlBean implements Serializable{
 		
 	}
 
+	public String getHtmlId(){
+		return "#"+shortUrl;
+	}
 }
