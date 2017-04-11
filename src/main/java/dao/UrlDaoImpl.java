@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import beans.UrlBean;
@@ -156,6 +157,7 @@ public class UrlDaoImpl implements UrlDao {
 		session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		Criteria criteria = session.createCriteria(UrlBean.class);
+		criteria.addOrder(Order.desc("createDate"));
 		List<UrlBean> beans = criteria.add(Restrictions.eq("userId", userId)).list();
 		session.getTransaction().commit();
 		return beans;
