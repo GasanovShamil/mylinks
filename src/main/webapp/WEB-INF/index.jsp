@@ -59,7 +59,7 @@
 	    			<input type="date" name="expireDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
 	 			 </div>
 	 			 <div class="col-md-6">
-	    			<input type="text" name="nbClick" class="form-control" placeholder="Click number">
+	    			<input type="number" name="nbClick" class="form-control" placeholder="Click number">
 	 			 </div>
 			</div>
 		</div>
