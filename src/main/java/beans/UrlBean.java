@@ -12,45 +12,54 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="url", 
-	   uniqueConstraints={@UniqueConstraint(columnNames={"shortUrl"})})
-public class UrlBean implements Serializable{
-	
+@Table(name = "url", uniqueConstraints = { @UniqueConstraint(columnNames = { "shortUrl" }) })
+public class UrlBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(name="shortUrl", nullable=false, unique=true, length=100)
+	@Column(name = "shortUrl", nullable = false, unique = true, length = 100)
 	private String shortUrl;
-	
-	@Column(name="longUrl", length=500, nullable=false)
+
+	@Column(name = "longUrl", length = 500, nullable = false)
 	private String longUrl;
-	
-	@Column(name="createDate", nullable=false)
+
+	@Column(name = "createDate", nullable = false)
 	private Timestamp createDate;
-	
-	@Column(name="expireDate", nullable=true)
+
+	@Column(name = "startDate", nullable = true)
+	private Timestamp startDate;
+
+	@Column(name = "expireDate", nullable = true)
 	private Timestamp expireDate;
-	
-	@Column(name="password", nullable=true)
+
+	@Column(name = "password", nullable = true)
 	private String password;
-	
-	@Column(name="nbClicks", nullable=true)
+
+	@Column(name = "captcha", nullable = false)
+	private boolean captcha;
+
+	@Column(name = "nbClicks", nullable = true)
 	private Integer nbClicks;
-	
-	@Column(name="userId", nullable=true)
+
+	@Column(name = "userId", nullable = true)
 	private Integer userId;
-	
-	@Column(name="generic", nullable=false)
+
+	@Column(name = "generic", nullable = false)
 	private boolean generic;
 
-	public UrlBean() {}
-	
-	public UrlBean(String shortUrl,String longUrl, Timestamp createDate, Timestamp expireDate, String password, Integer nbClicks, Integer userId, boolean generic){
+	public UrlBean() {
+	}
+
+	public UrlBean(String shortUrl, String longUrl, Timestamp createDate, Timestamp startDate, Timestamp expireDate,
+			String password, boolean captcha, Integer nbClicks, Integer userId, boolean generic) {
 		this.shortUrl = shortUrl;
 		this.longUrl = longUrl;
 		this.createDate = createDate;
+		this.startDate = startDate;
 		this.expireDate = expireDate;
 		this.password = password;
+		this.captcha = captcha;
 		this.nbClicks = nbClicks;
 		this.userId = userId;
 		this.generic = generic;
@@ -119,17 +128,41 @@ public class UrlBean implements Serializable{
 	public void setGeneric(boolean generic) {
 		this.generic = generic;
 	}
-	
+
 	public boolean dateExpired(){	
-		return (expireDate == null)?false:this.expireDate.before(new Timestamp(new Date().getTime()));
-	}
-	
-	public void decreaseNbClicks(){
-		this.nbClicks--;
-		
+		boolean res =false;
+		if(startDate != null && this.startDate.after(new Timestamp(new Date().getTime()))){
+			res = true;
+		}else if(expireDate != null && this.expireDate.before(new Timestamp(new Date().getTime()))){
+			res = true;
+		}
+		//return (expireDate == null)?false:((this.expireDate.before(new Timestamp(new Date().getTime())))||( this.startDate.after(new Timestamp(new Date().getTime()))));
+		//return (expireDate == null)?false:this.expireDate.before(new Timestamp(new Date().getTime()));
+		return res;
 	}
 
-	public String getHtmlId(){
-		return "#"+shortUrl;
+	public void decreaseNbClicks() {
+		this.nbClicks--;
+
+	}
+
+	public String getHtmlId() {
+		return "#" + shortUrl;
+	}
+
+	public Timestamp getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Timestamp startDate) {
+		this.startDate = startDate;
+	}
+
+	public boolean isCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(boolean captcha) {
+		this.captcha = captcha;
 	}
 }

@@ -24,7 +24,7 @@
 			</div>
 		</c:if>
 		<c:if test="${not empty shortUrl}">
-  				<div class="alert alert-warning col-md-6 col-md-offset-3">
+  				<div class="alert alert-success col-md-6 col-md-offset-3">
 						<p class="text-center"><a href="${ shortUrl }">${ shortUrl }</a></p>
 			</div>
 		</c:if>
@@ -53,14 +53,21 @@
 	 			 <div class="col-md-6">
 	    			<input type="password" name="urlPassword" class="form-control" placeholder="Password">
 	 			 </div>
-			</div>
-			<div class="row col-md-6 col-md-offset-3">
-				<div class="col-md-6">
-	    			<input type="date" name="expireDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
-	 			 </div>
 	 			 <div class="col-md-6">
 	    			<input type="number" name="nbClick" class="form-control" placeholder="Click number">
 	 			 </div>
+	 			 <div class="col-md-6">
+	    			<input type="checkbox" name="captcha" class="form-control" value="true">
+	 			 </div>
+			</div>
+			<div class="row col-md-6 col-md-offset-3">
+				<div class="col-md-6">
+	    			<input type="date" name="startDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
+	 			 </div>
+				<div class="col-md-6">
+	    			<input type="date" name="expireDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
+	 			 </div>
+	 			 
 			</div>
 		</div>
     </div>

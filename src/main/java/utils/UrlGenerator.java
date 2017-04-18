@@ -1,4 +1,4 @@
-package beans;
+package utils;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import dao.UrlDao;
-import utils.Database;
 
 @Named
 @ApplicationScoped

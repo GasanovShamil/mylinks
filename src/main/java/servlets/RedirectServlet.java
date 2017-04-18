@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import beans.UrlBean;
 import dao.UrlDao;
+import utils.CaptchaUtil;
 
 @WebServlet("/redirect")
 public class RedirectServlet extends HttpServlet {
@@ -39,8 +40,10 @@ public class RedirectServlet extends HttpServlet {
 			} else if (bean.dateExpired()) {
 				request.setAttribute("alert", "Expired URL: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
-			} else if (bean.getPassword() != null) {
+			} else if (bean.getPassword() != null || bean.isCaptcha()) {
 					request.setAttribute("shortUrl", shortUrl);
+					request.setAttribute("password", bean.getPassword() !=null);
+					request.setAttribute("captcha", bean.isCaptcha());
 					getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
 				
 			} else if (bean.getNbClicks() != null) {
@@ -66,9 +69,18 @@ public class RedirectServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String shortUrl = (String) request.getParameter("url");
 		String urlPassword = (String) request.getParameter("urlPassword");
+		String captchaResponse = request.getParameter("g-recaptcha-response");
 		UrlBean bean = urlDao.getUrl(shortUrl);
-		if (urlPassword == null || !urlPassword.equals(bean.getPassword())) {
+		if (urlPassword != null && !urlPassword.equals(bean.getPassword())) {
 			request.setAttribute("alert", "Wrong password! Please try again :)");
+			request.setAttribute("password", true);
+			request.setAttribute("captcha", captchaResponse != null);
+			request.setAttribute("shortUrl", shortUrl);
+			getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
+		}else if(captchaResponse != null && !CaptchaUtil.verify(captchaResponse)){
+			request.setAttribute("alert", "Please check \"I am not a robot\"! ");
+			request.setAttribute("password", urlPassword != null);
+			request.setAttribute("captcha", true);
 			request.setAttribute("shortUrl", shortUrl);
 			getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
 		}else if (bean.getNbClicks() != null) {

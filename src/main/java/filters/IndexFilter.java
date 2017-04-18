@@ -30,7 +30,7 @@ public class IndexFilter implements Filter {
 		String pathInfo = req.getRequestURI().substring(req.getContextPath().length() + 1);
 		if (!pathInfo.isEmpty() && !pathInfo.endsWith(".css") && !pathInfo.endsWith(".js")
 				&& !pathInfo.endsWith("createUrl") && !pathInfo.endsWith("index")
-				&& !pathInfo.endsWith("login") && !pathInfo.endsWith("redirect") && !pathInfo.endsWith("logout") && !pathInfo.endsWith("createUser") && !pathInfo.endsWith("manageUrl")) {
+				&& !pathInfo.endsWith("login") && !pathInfo.endsWith("redirect") && !pathInfo.endsWith("logout") && !pathInfo.endsWith("createUser") && !pathInfo.endsWith("manageUrl") && !pathInfo.endsWith("csvManager")) {
 			res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
 	        res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 	        res.setDateHeader("Expires", 0);
