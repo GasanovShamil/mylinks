@@ -51,13 +51,16 @@ public class CreateUrlServlet extends HttpServlet {
 		UserBean user = (UserBean) session.getAttribute("user");
 		Integer userId = (user != null)?user.getUserId():null;
 		String personalUrlString = (String) request.getParameter("personalUrl");
-		String urlPasswordString = (String) request.getParameter("urlPassword");
+		String passwordCheckbox = (String) request.getParameter("passwordCheckbox");
+		
+		String urlPasswordString =(passwordCheckbox!= null && !passwordCheckbox.isEmpty())?(String) request.getParameter("urlPassword"):null;
 		String startDateString = (String) request.getParameter("startDate");
 		String expireDateString = (String) request.getParameter("expireDate");
 		String nbClickString = (String) request.getParameter("nbClick");
 		String longUrlString = (String) request.getParameter("longUrl");
-		String[] checbox = request.getParameterValues("captcha");
-		String captcha = checbox[0];
+		String captchaCheckbox = (String) request.getParameter("captchaCheckbox");
+		
+		String captcha = (captchaCheckbox != null && !captchaCheckbox.isEmpty())?captchaCheckbox:"false";
 		String[] res = urlUtil.createUrl(personalUrlString, longUrlString, startDateString, expireDateString, urlPasswordString, captcha, nbClickString, userId);
 		request.setAttribute(res[0], res[1]);
 		getServletContext().getRequestDispatcher("/").forward(request, response);

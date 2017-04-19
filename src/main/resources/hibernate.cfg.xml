@@ -16,5 +16,6 @@
 		<!-- Mapping with model class containing annotations -->
 		<mapping class="beans.UrlBean"/>
 		<mapping class="beans.UserBean"/>
+		<mapping class="beans.StatBean"/>
 	</session-factory>
 </hibernate-configuration>

@@ -9,6 +9,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/logoutDropdown.css">
 	<script src='https://www.google.com/recaptcha/api.js'></script>	
+	<script src="${pageContext.request.contextPath}/js/frontUtils.js"></script>
   </head>
 <body>
 <nav class="navbar navbar-inverse">

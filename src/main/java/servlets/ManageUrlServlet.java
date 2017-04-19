@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import beans.UrlBean;
 import beans.UserBean;
 import dao.UrlDao;
+import utils.UrlUtil;
 
 @WebServlet("/manageUrl")
 public class ManageUrlServlet extends HttpServlet {
@@ -25,6 +26,9 @@ public class ManageUrlServlet extends HttpServlet {
 	@Inject
 	UrlDao urlDao;
 
+	@Inject
+	UrlUtil urlUtil;
+	
 	public ManageUrlServlet() {
 		super();
 	}
@@ -49,20 +53,22 @@ public class ManageUrlServlet extends HttpServlet {
 		} else {
 			String shortUrl = request.getParameter("shortUrl");
 			String urlPassword = request.getParameter("urlPassword");
+			String startDateString = request.getParameter("startDate");
 			String expireDateString = request.getParameter("expireDate");
+			Timestamp startTimestamp = null;
 			Timestamp expireTimestamp = null;
-			if (!expireDateString.isEmpty()) {
-				Date expireDate;
+			
 				try {
-					expireDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(expireDateString + " 23:59:59.000");
-					expireTimestamp = new Timestamp(expireDate.getTime());
+					startTimestamp = urlUtil.getTimestampFromString(startDateString, true);;
+					expireTimestamp = urlUtil.getTimestampFromString(expireDateString, false);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
-			}
+			
 			String nbClickString = request.getParameter("nbClick");
 			Integer nbClickInt = (!nbClickString.isEmpty()) ? Integer.parseInt(nbClickString) : null;
 			UrlBean url = urlDao.getUrl(shortUrl);
+			url.setStartDate(startTimestamp);
 			url.setExpireDate(expireTimestamp);
 			url.setPassword((urlPassword.isEmpty())?null:urlPassword);
 			url.setNbClicks(nbClickInt);

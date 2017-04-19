@@ -13,7 +13,7 @@
 	<div class="container-fluid">
 	<br />
 	<p>CSV format:</p>
-	<p> "personalUrlString","longUrlString","startDateString","expireDateString","urlPasswordString","captcha","nbClickString"</p>
+	<p> "personalUrlString","longUrlString","startDateString(YYYY-MM-DD)","expireDateString(YYYY-MM-DD)","urlPasswordString","captcha(true/false)","nbClickString"</p>
 	<form action="csvManager" method="post"	enctype="multipart/form-data">
 		<input type="file" name="file" size="50" /> <br /> <input
 			type="submit" value="Upload File" />

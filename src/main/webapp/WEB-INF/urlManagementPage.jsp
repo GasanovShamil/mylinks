@@ -17,6 +17,7 @@
 				<th>ShortUrl</th>
 				<th>LongUrl</th>
 				<th>Created</th>
+				<th>Start</th>
 				<th>Expire</th>
 				<th>Password</th>
 				<th>Clicks</th>
@@ -29,6 +30,7 @@
 					<td>${url.getShortUrl()}</td>
 					<td>${url.getLongUrl()}</td>
 					<td>${url.getCreateDate()}</td>
+					<td>${url.getStartDate()}</td>
 					<td>${url.getExpireDate()}</td>
 					<td>${url.getPassword()}</td>
 					<td>${url.getNbClicks()}</td>
@@ -36,23 +38,24 @@
 				<tr>
 					<td colspan="12" class="hiddenRow">
 						<div class="accordian-body collapse" id="${url.getShortUrl()}">
-							<form action="manageUrl" method="post">
-								<div class="row col-md-8 col-md-offset-2">
-									<div class="col-md-2">
-										<input type="hidden" name="shortUrl" value="${url.getShortUrl()}">
+							<form class="form-inline" action="manageUrl" method="post">
+								<input type="hidden" name="shortUrl" value="${url.getShortUrl()}">
+								
+									<div class="form-group">
+									<label for="startDate">From:</label>
+										<input type="date" id="startDate" name="startDate" class="form-control">
+									</div>
+									<div class="form-group">
+										<label for="expireDate">Until:</label>
+										<input type="date" id="expireDate" name="expireDate" class="form-control">
+									</div>
+									<div class="form-group">									
 										<input type="password" name="urlPassword" class="form-control" placeholder="Password">
 									</div>
-
-									<div class="col-md-2">
-										<input type="date" name="expireDate" class="form-control"
-											placeholder="Expire Date (jj/mm/aaaa)">
+									<div class="form-group">
+										<input type="text" name="nbClick" class="form-control" placeholder="Click number">
 									</div>
-									<div class="col-md-2">
-										<input type="text" name="nbClick" class="form-control"
-											placeholder="Click number">
-									</div>
-								</div>
-								<button class="btn btn-default" type="submit">Update!</button>
+									<button class="btn btn-default" type="submit">Update!</button>
 							</form>
 						</div>
 					</td>

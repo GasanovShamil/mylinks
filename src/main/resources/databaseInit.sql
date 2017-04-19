@@ -30,9 +30,8 @@ CREATE TABLE `url` (
 CREATE TABLE `stats` (
 	`idStat` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	`shortUrl` varchar(100) NOT NULL,
-	`visitNumber` INT,
 	`ipAddress` varchar(15),
-	`country` varchar(100),
+	`country` varchar(100) DEFAULT NULL,
 	`visitDate` TIMESTAMP 
 );
 

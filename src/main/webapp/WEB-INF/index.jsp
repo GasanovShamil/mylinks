@@ -35,43 +35,66 @@
 						      <input type="text" class="form-control" name="longUrl" required>
 						      <span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span>
 						    </div>
-						
+							<div class="checkbox">
+						        <label>
+						            <input type="checkbox" id="checkbox" name="passwordCheckbox" value="true" data-toggle="collapse" data-target="#passwordField">
+						            Secure with password
+						        </label>
+						    </div>
+						    <div class="collapse" id="passwordField">
+						    <div class="form-group form-group-lowermargin">					        
+						            <input type="password" name="urlPassword" class="form-control" placeholder="Password">
+						    </div>
+						</div>
 					</div>
 				</div>
 	</div>
     </div>
+    
+    <c:choose>
+    <c:when test="${empty user}">
+        <div class="alert alert-info col-md-6 col-md-offset-3">
+				<p class="text-center">Please sign in or sign up to use advanced options!</p>
+			</div>
+    </c:when>    
+    <c:otherwise>  
     <div class="panel panel-default">
       	<div class="panel-heading" align="center">
       	<a data-toggle="collapse" href="#collapse1">Advanced options</a>
 		</div>
 		<div id="collapse1" class="panel-collapse collapse">
       <div class="panel-body">
-			<div class="row col-md-6 col-md-offset-3">
+      		<div class="form-group row col-md-6 col-md-offset-3">
+				<div class="col-md-6">
+					<label for="startDate">From: </label>
+	    			<input type="date" id="startDate"name="startDate" class="form-control">
+	 			 </div>
+				<div class="col-md-6">
+				<label for="endDate">Until: </label>
+	    			<input type="date" id="endDate" name="expireDate" class="form-control">
+	 			 </div>
+	 			 
+			</div>
+			<div class="form-group row col-md-6 col-md-offset-3">
 				<div class="col-md-6">
 	    			<input type="text" name="personalUrl" class="form-control" placeholder="Personal url">
 	 			 </div>
 	 			 <div class="col-md-6">
-	    			<input type="password" name="urlPassword" class="form-control" placeholder="Password">
-	 			 </div>
-	 			 <div class="col-md-6">
 	    			<input type="number" name="nbClick" class="form-control" placeholder="Click number">
 	 			 </div>
-	 			 <div class="col-md-6">
-	    			<input type="checkbox" name="captcha" class="form-control" value="true">
+	 			 <div class="checkbox col-md-6">
+	 			 <label>
+				 	<input type="checkbox" id="#checkbox" name="captchaCheckbox"  value="true">Captcha</label>
 	 			 </div>
 			</div>
-			<div class="row col-md-6 col-md-offset-3">
-				<div class="col-md-6">
-	    			<input type="date" name="startDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
-	 			 </div>
-				<div class="col-md-6">
-	    			<input type="date" name="expireDate" class="form-control" placeholder="Expire Date (jj/mm/aaaa)">
-	 			 </div>
-	 			 
-			</div>
+			
 		</div>
     </div>
     </div>
+      
+    </c:otherwise>
+</c:choose>
+    
     </form>
   </div>
   

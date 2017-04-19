@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import beans.UrlBean;
 import dao.UrlDao;
 import utils.CaptchaUtil;
+import utils.UrlUtil;
 
 @WebServlet("/redirect")
 public class RedirectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	UrlDao urlDao;
+	
+	@Inject
+	UrlUtil urlUtil;
 
 	public RedirectServlet() {
 		super();
@@ -37,6 +41,10 @@ public class RedirectServlet extends HttpServlet {
 			if (bean == null) {
 				request.setAttribute("alert", "There is no such url: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
+				
+//			}else if(!urlUtil.isLiveUrl(bean.getLongUrl())){
+//				request.setAttribute("alert", "This link died: " + bean.getLongUrl());
+//				getServletContext().getRequestDispatcher("/").forward(request, response);
 			} else if (bean.dateExpired()) {
 				request.setAttribute("alert", "Expired URL: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
@@ -96,5 +104,4 @@ public class RedirectServlet extends HttpServlet {
 			response.sendRedirect(bean.getLongUrl());
 		}
 	}
-
 }
