@@ -55,7 +55,7 @@ public class UrlUtil implements Serializable {
 			map[1] = "This is not an URL: " + longUrlString;
 		} else {
 			try {
-				generic = (personalUrlString.isEmpty());
+				generic = (personalUrlString == null ||personalUrlString.isEmpty());
 				shortUrl = (generic) ? urlGenerator.newUrl() : personalUrlString;
 				createTimestamp = new Timestamp(new Date().getTime());
 				startTimestamp = getTimestampFromString(startDateString, true);

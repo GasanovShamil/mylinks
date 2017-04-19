@@ -35,17 +35,17 @@
 						      <input type="text" class="form-control" name="longUrl" required>
 						      <span class="input-group-btn"><button class="btn btn-default" type="submit">Go!</button></span>
 						    </div>
-							<div class="checkbox">
-						        <label>
-						            <input type="checkbox" id="checkbox" name="passwordCheckbox" value="true" data-toggle="collapse" data-target="#passwordField">
-						            Secure with password
-						        </label>
-						    </div>
-						    <div class="collapse" id="passwordField">
-						    <div class="form-group form-group-lowermargin">					        
-						            <input type="password" name="urlPassword" class="form-control" placeholder="Password">
-						    </div>
-						</div>
+						<div class="checkbox">
+								<label><input type="checkbox" id="passwordCheckbox" name="passwordCheckbox" value="true"> Secure with password </label>			
+							</div>
+							<div class="collapse" id="crypt">			
+					    			<div class="input-group col-md-4">
+					      				<span class="input-group-btn">
+					        				<button class="btn btn-default" id="refresh" type="button"><span class="glyphicon glyphicon-refresh"></span></button>
+					      				</span>
+					      				<input type="text" class="form-control input-sm" id="urlPassword" name="urlPassword" placeholder="Password value="">
+					    			</div><!-- /input-group --> 			
+							</div>	
 					</div>
 				</div>
 	</div>
