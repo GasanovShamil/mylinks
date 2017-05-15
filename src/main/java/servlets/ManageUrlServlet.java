@@ -55,6 +55,7 @@ public class ManageUrlServlet extends HttpServlet {
 			String urlPassword = request.getParameter("urlPassword");
 			String startDateString = request.getParameter("startDate");
 			String expireDateString = request.getParameter("expireDate");
+			String captchaCheckbox = (String) request.getParameter("captchaCheckbox");
 			Timestamp startTimestamp = null;
 			Timestamp expireTimestamp = null;
 			
@@ -72,6 +73,7 @@ public class ManageUrlServlet extends HttpServlet {
 			url.setExpireDate(expireTimestamp);
 			url.setPassword((urlPassword.isEmpty())?null:urlPassword);
 			url.setNbClicks(nbClickInt);
+			url.setCaptcha((captchaCheckbox != null && !captchaCheckbox.isEmpty())?true:false);
 			urlDao.updateUrl(url);
 //			getServletContext().getRequestDispatcher("/WEB-INF/urlManagementPage.jsp").forward(request, response);
 			doGet(request, response);

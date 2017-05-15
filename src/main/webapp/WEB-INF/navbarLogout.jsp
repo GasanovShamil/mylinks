@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/logoutDropdown.css">
 	<script src='https://www.google.com/recaptcha/api.js'></script>	
 	<script src="${pageContext.request.contextPath}/js/frontUtils.js"></script>
+	<script src="${pageContext.request.contextPath}/js/fileUpload.js"></script>
   </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -24,7 +25,7 @@
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
 		<ul class="nav navbar-nav">
-			<li><a href="/mylinks">Home</a></li>
+			<li><a href="/mylinks">Create URL</a></li>
 			<li><a href="/mylinks/manageUrl">My URLs</a></li>
 			<li><a href="/mylinks/csvManager">Upload CSV</a></li>
 			<c:if test="${ user.isAdmin() }">

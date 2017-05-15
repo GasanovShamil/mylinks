@@ -59,8 +59,8 @@
     </c:when>    
     <c:otherwise>  
     <div class="panel panel-default">
-      	<div class="panel-heading" align="center">
-      	<a data-toggle="collapse" href="#collapse1">Advanced options</a>
+      	<div class="panel-heading accordion-toggle" align="center" data-toggle="collapse" data-target="#collapse1" role="button">
+      	Advanced options
 		</div>
 		<div id="collapse1" class="panel-collapse collapse">
       <div class="panel-body">

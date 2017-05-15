@@ -51,8 +51,7 @@ public class CreateUrlServlet extends HttpServlet {
 		UserBean user = (UserBean) session.getAttribute("user");
 		Integer userId = (user != null)?user.getUserId():null;
 		String personalUrlString = (String) request.getParameter("personalUrl");
-		String passwordCheckbox = (String) request.getParameter("passwordCheckbox");
-		
+		String passwordCheckbox = (String) request.getParameter("passwordCheckbox");	
 		String urlPasswordString =(passwordCheckbox!= null && !passwordCheckbox.isEmpty())?(String) request.getParameter("urlPassword"):null;
 		String startDateString = (String) request.getParameter("startDate");
 		String expireDateString = (String) request.getParameter("expireDate");
