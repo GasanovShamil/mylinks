@@ -50,6 +50,7 @@ public class CreateConfirmUserServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String surname = request.getParameter("surname");
 		String email = request.getParameter("email");
+		String accountType = request.getParameter("accountType");
 		String password = request.getParameter("password");
 		String repassword = request.getParameter("repassword");
 
@@ -61,7 +62,7 @@ public class CreateConfirmUserServlet extends HttpServlet {
 			getServletContext().getRequestDispatcher("/").forward(request, response);
 		} else {
 			String confirmToken = UUID.randomUUID().toString().replaceAll("-", "");
-			UserBean user = new UserBean(name, surname, email, PasswordUtil.getHash(password), confirmToken, false, false);
+			UserBean user = new UserBean(name, surname, email, accountType, PasswordUtil.getHash(password), confirmToken, false, false);
 			userDao.putUser(user);
 			mailer.sendEmail(email, name, confirmToken, 0);
 			request.setAttribute("alert", "Please check your mail to confirm account.");

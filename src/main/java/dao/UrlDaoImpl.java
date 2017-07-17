@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,10 +11,15 @@ import javax.inject.Named;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 
 import beans.UrlBean;
 import utils.HibernateUtil;
@@ -84,4 +90,24 @@ public class UrlDaoImpl implements UrlDao {
 		return beans;
 	}
 	
+	@Override
+	public UrlBean getLastGenericUrl() {
+		session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		
+		Criteria maxQuery = session.createCriteria(UrlBean.class);
+		maxQuery.setProjection( Projections.max( "createDate" ));
+		maxQuery.add(Restrictions.eq("generic", true));
+		List<Timestamp> dateList = maxQuery.list();
+		session.getTransaction().commit();
+		session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		Criteria criteria = session.createCriteria(UrlBean.class);
+		criteria.add(Restrictions.eq("generic", true));
+		criteria.add(Restrictions.eq("createDate", dateList.get(0)));
+		List<UrlBean> beans = criteria.list();
+		session.getTransaction().commit();
+		
+		return (beans.isEmpty())?null:beans.get(0);
+	}
 }

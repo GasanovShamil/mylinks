@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import beans.UrlBean;
 import dao.UrlDao;
 
 @Named
@@ -81,29 +82,43 @@ public class UrlGenerator implements Serializable {
 //
 //	}
 
+//	@PostConstruct
+//	public void init() {
+//
+//		Connection conn = db.getConnection();
+//		UrlBean bean = urlDao.getLastGenericUrl();
+//		Statement st;
+//		try {
+//			st = conn.createStatement();
+//			ResultSet res = st.executeQuery("SELECT * from url WHERE createDate = (SELECT MAX(createDate) FROM url WHERE generic = true) AND generic = true");
+//			if (!res.next()) {
+//				System.out.println("there is no url in database. First url is set to : 11110");
+//				this.setUrl("11110");
+//			} else {
+//				this.setUrl(res.getString("shortUrl"));
+//				System.out.println("BEAN :"+bean.getShortUrl());
+//				System.out.println("Last shortUrl in database is:" + this.getUrl());
+//			}
+//			res.close();
+//			st.close();
+//			conn.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//
+//	}
+
 	@PostConstruct
 	public void init() {
 
-		Connection conn = db.getConnection();
-
-		Statement st;
-		try {
-			st = conn.createStatement();
-			ResultSet res = st.executeQuery("SELECT * from url WHERE createDate = (SELECT MAX(createDate) FROM url WHERE generic = true)");
-			if (!res.next()) {
+		UrlBean bean = urlDao.getLastGenericUrl();
+			if (bean == null) {
 				System.out.println("there is no url in database. First url is set to : 11110");
 				this.setUrl("11110");
 			} else {
-				this.setUrl(res.getString("shortUrl"));
+				this.setUrl(bean.getShortUrl());
 				System.out.println("Last shortUrl in database is:" + this.getUrl());
 			}
-			res.close();
-			st.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	public String getUrl() {

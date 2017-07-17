@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 import beans.UrlBean;
 import beans.UserBean;
 import dao.UrlDao;
@@ -28,7 +30,7 @@ public class ManageUrlServlet extends HttpServlet {
 
 	@Inject
 	UrlUtil urlUtil;
-	
+
 	public ManageUrlServlet() {
 		super();
 	}
@@ -48,6 +50,7 @@ public class ManageUrlServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		JSONObject json = new JSONObject();
 		if (user == null) {
 			response.sendRedirect("index");
 		} else {
@@ -58,27 +61,44 @@ public class ManageUrlServlet extends HttpServlet {
 			String captchaCheckbox = (String) request.getParameter("captchaCheckbox");
 			Timestamp startTimestamp = null;
 			Timestamp expireTimestamp = null;
-			
-				try {
-					startTimestamp = urlUtil.getTimestampFromString(startDateString, true);;
-					expireTimestamp = urlUtil.getTimestampFromString(expireDateString, false);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-			
+
+			try {
+				startTimestamp = urlUtil.getTimestampFromString(startDateString, true);
+				;
+				expireTimestamp = urlUtil.getTimestampFromString(expireDateString, false);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+
 			String nbClickString = request.getParameter("nbClick");
-			Integer nbClickInt = (!nbClickString.isEmpty()) ? Integer.parseInt(nbClickString) : null;
+			Integer nbTotalClickInt = (!nbClickString.isEmpty()) ? Integer.parseInt(nbClickString) : null;
 			UrlBean url = urlDao.getUrl(shortUrl);
 			url.setStartDate(startTimestamp);
 			url.setExpireDate(expireTimestamp);
-			url.setPassword((urlPassword.isEmpty())?null:urlPassword);
-			url.setNbClicks(nbClickInt);
-			url.setCaptcha((captchaCheckbox != null && !captchaCheckbox.isEmpty())?true:false);
-			urlDao.updateUrl(url);
-//			getServletContext().getRequestDispatcher("/WEB-INF/urlManagementPage.jsp").forward(request, response);
-			doGet(request, response);
-			
+			url.setPassword((urlPassword.isEmpty()) ? null : urlPassword);
 
+			url.setCaptcha(captchaCheckbox.equals("1"));
+			urlDao.updateUrl(url);
+			// getServletContext().getRequestDispatcher("/WEB-INF/urlManagementPage.jsp").forward(request,
+			// response);
+
+			boolean status = true;
+			String message = "The url has been updated";
+			
+			if (nbTotalClickInt != null) {
+				if (nbTotalClickInt < url.getNbClicks()) {
+					status = false;
+					message = "Total clicks can not be lower than used clicks";
+				} else {
+					url.setTotalClicks(nbTotalClickInt);
+				}
+			}
+			
+			if (status) urlDao.updateUrl(url);
+			
+			json.put("status", status);
+			json.put("message", message);
+			response.getWriter().append(json.toString());
 		}
 	}
 

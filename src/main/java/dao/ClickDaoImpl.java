@@ -10,12 +10,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import beans.StatBean;
+import beans.ClickBean;
 import utils.HibernateUtil;
 
 @Named
 @RequestScoped
-public class StatDaoImpl implements StatDao {
+public class ClickDaoImpl implements ClickDao {
 
 	@Inject
 	HibernateUtil hibernateUtil;
@@ -33,7 +33,7 @@ public class StatDaoImpl implements StatDao {
 	}
 	
 	@Override
-	public boolean putStat(StatBean bean) {
+	public boolean putStat(ClickBean bean) {
 		try {
 			session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
@@ -47,14 +47,20 @@ public class StatDaoImpl implements StatDao {
 	}
 
 	@Override
-	public StatBean getStat(String shortUrl) {
-		// TODO Desider comment recuperer les stats
-		return null;
+	public ClickBean getStat(String statId) {
+		session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		ClickBean bean = (ClickBean) session.get(ClickBean.class, statId);
+		session.getTransaction().commit();
+		return bean;
 	}
 
 	@Override
-	public void updateStat(StatBean bean) {
-		// TODO Je ne sais pas si on a besoin de cette metode
+	public void updateStat(ClickBean bean) {
+		session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+		session.update(bean);
+		session.getTransaction().commit();
 	}
 
 }

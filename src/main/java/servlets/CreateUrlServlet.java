@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import beans.UrlBean;
 import beans.UserBean;
 import dao.UrlDao;
+import utils.ConfigClass;
 import utils.UrlGenerator;
 import utils.UrlUtil;
 
@@ -58,7 +59,6 @@ public class CreateUrlServlet extends HttpServlet {
 		String nbClickString = (String) request.getParameter("nbClick");
 		String longUrlString = (String) request.getParameter("longUrl");
 		String captchaCheckbox = (String) request.getParameter("captchaCheckbox");
-		
 		String captcha = (captchaCheckbox != null && !captchaCheckbox.isEmpty())?captchaCheckbox:"false";
 		String[] res = urlUtil.createUrl(personalUrlString, longUrlString, startDateString, expireDateString, urlPasswordString, captcha, nbClickString, userId);
 		request.setAttribute(res[0], res[1]);

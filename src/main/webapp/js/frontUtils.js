@@ -8,6 +8,8 @@ $( document ).ready(function() {
 //    }
 //});
 
+	
+	
 	$('#passwordCheckbox').on('change', function() { 						
 		if($('#passwordCheckbox').prop('checked')){
 			var res=Password.generate(5);

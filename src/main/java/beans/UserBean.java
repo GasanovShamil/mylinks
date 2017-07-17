@@ -25,8 +25,11 @@ public class UserBean {
 	private String surname;	
 	
 	@Column(name="email", nullable=false, unique=true, length=100)
-	private String email;	
+	private String email;
 	
+	@Column(name="accountType", nullable=false, length=100)
+	private String accountType;
+
 	@Column(name="password", nullable=false, length=100)
 	private String password;
 
@@ -42,10 +45,11 @@ public class UserBean {
 	public UserBean() {
 	}
 
-	public UserBean(String name, String surname, String email, String password,String confirmToken,boolean isConfirmed, boolean isAdmin){
+	public UserBean(String name, String surname, String email, String accountType, String password,String confirmToken,boolean isConfirmed, boolean isAdmin){
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
+		this.accountType = accountType;
 		this.password = password;
 		this.confirmToken = confirmToken;
 		this.isConfirmed = isConfirmed;
@@ -90,6 +94,14 @@ public class UserBean {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
+	}
+	
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
 	}
 
 	public boolean isAdmin() {

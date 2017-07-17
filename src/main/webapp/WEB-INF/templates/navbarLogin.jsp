@@ -10,6 +10,10 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/loginDropdown.css">
 	<script src='https://www.google.com/recaptcha/api.js'></script>	
 	<script src="${pageContext.request.contextPath}/js/frontUtils.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.jqplot.min.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script> -->
+	
   </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -45,6 +49,15 @@
 										<div class="form-group">
 											 <label class="sr-only" for="inputEmail">Email address</label>
 											 <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email address" required>
+										</div>
+										<div class="form-group">
+											 <label class="sr-only" for="accountType">Account type</label>
+											 <select name="accountType" class="form-control" id="accountType"  required>
+												  <option value="" disabled selected>Account type</option>
+												  <option value="particular">Particular</option>
+												  <option value="association">Association</option>
+												  <option value="enterprise">Enterprise</option>
+											 </select>
 										</div>
 										<div class="form-group">
 											 <label class="sr-only" for="inputPassword2">Password</label>

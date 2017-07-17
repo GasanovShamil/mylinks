@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -42,6 +41,9 @@ public class UrlBean implements Serializable {
 	@Column(name = "nbClicks", nullable = true)
 	private Integer nbClicks;
 
+	@Column(name = "totalClicks", nullable = true)
+	private Integer totalClicks;
+
 	@Column(name = "userId", nullable = true)
 	private Integer userId;
 
@@ -52,7 +54,7 @@ public class UrlBean implements Serializable {
 	}
 
 	public UrlBean(String shortUrl, String longUrl, Timestamp createDate, Timestamp startDate, Timestamp expireDate,
-			String password, boolean captcha, Integer nbClicks, Integer userId, boolean generic) {
+			String password, boolean captcha, Integer nbClicks, Integer totalClicks, Integer userId, boolean generic) {
 		this.shortUrl = shortUrl;
 		this.longUrl = longUrl;
 		this.createDate = createDate;
@@ -61,6 +63,7 @@ public class UrlBean implements Serializable {
 		this.password = password;
 		this.captcha = captcha;
 		this.nbClicks = nbClicks;
+		this.totalClicks = totalClicks;
 		this.userId = userId;
 		this.generic = generic;
 	}
@@ -129,21 +132,23 @@ public class UrlBean implements Serializable {
 		this.generic = generic;
 	}
 
-	public boolean dateExpired(){	
-		boolean res =false;
-		if(startDate != null && this.startDate.after(new Timestamp(new Date().getTime()))){
+	public boolean dateExpired() {
+		boolean res = false;
+		if (startDate != null && this.startDate.after(new Timestamp(new Date().getTime()))) {
 			res = true;
-		}else if(expireDate != null && this.expireDate.before(new Timestamp(new Date().getTime()))){
+		} else if (expireDate != null && this.expireDate.before(new Timestamp(new Date().getTime()))) {
 			res = true;
 		}
-		//return (expireDate == null)?false:((this.expireDate.before(new Timestamp(new Date().getTime())))||( this.startDate.after(new Timestamp(new Date().getTime()))));
-		//return (expireDate == null)?false:this.expireDate.before(new Timestamp(new Date().getTime()));
+		// return (expireDate == null)?false:((this.expireDate.before(new
+		// Timestamp(new Date().getTime())))||( this.startDate.after(new
+		// Timestamp(new Date().getTime()))));
+		// return (expireDate == null)?false:this.expireDate.before(new
+		// Timestamp(new Date().getTime()));
 		return res;
 	}
 
-	public void decreaseNbClicks() {
-		this.nbClicks--;
-
+	public void increaseNbClicks() {
+		this.nbClicks++;
 	}
 
 	public String getHtmlId() {
@@ -164,5 +169,17 @@ public class UrlBean implements Serializable {
 
 	public void setCaptcha(boolean captcha) {
 		this.captcha = captcha;
+	}
+
+	public Integer getTotalClicks() {
+		return totalClicks;
+	}
+
+	public void setTotalClicks(Integer totalClicks) {
+		this.totalClicks = totalClicks;
+	}
+	
+	public String getCaptchaIcon() {
+		return captcha ? "<span class=\"glyphicon glyphicon-ok green\"></span>" : "<span class=\"glyphicon glyphicon-remove red\"></span>";
 	}
 }

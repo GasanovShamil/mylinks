@@ -10,7 +10,14 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/logoutDropdown.css">
 	<script src='https://www.google.com/recaptcha/api.js'></script>	
 	<script src="${pageContext.request.contextPath}/js/frontUtils.js"></script>
+	<script src="${pageContext.request.contextPath}/js/edit.js"></script>
 	<script src="${pageContext.request.contextPath}/js/fileUpload.js"></script>
+	<script src="${pageContext.request.contextPath}/js/toastr.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/jquery.jqplot.min.css" />
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/toastr.min.css" />
+	<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css"> 
+	<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+	
   </head>
 <body>
 <nav class="navbar navbar-inverse">
@@ -50,8 +57,9 @@
 										<strong>${ user.name } ${ user.surname }</strong>
 									</p>
 									<p class="text-left small">${ user.email }</p>
+									<p class="text-left small">${ user.accountType }</p>
 									<p class="text-left">
-										<a href="#" class="btn btn-primary btn-block btn-sm">Profile settings</a>
+										<a href="account" class="btn btn-primary btn-block btn-sm">Edit profile</a>
 									</p>
 								</div>
 							</div>

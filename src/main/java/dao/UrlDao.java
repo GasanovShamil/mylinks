@@ -15,5 +15,7 @@ public interface UrlDao {
 	boolean shortUrlExist(String shortUrl);
 
 	List<UrlBean> getUrlsByUserId(Integer userId);
+	
+	UrlBean getLastGenericUrl();
 
 }

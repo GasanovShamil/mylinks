@@ -2,14 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
-<c:choose>
-    <c:when test="${empty user}">
-        <%@ include file="navbarLogin.jsp"%>
-    </c:when>    
-    <c:otherwise>
-       <%@ include file="navbarLogout.jsp"%>
-    </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
+
 	<br>
 	<div class="container-fluid">
 	
@@ -18,15 +12,23 @@
     <div class="panel panel-success">
       	<div class="panel-heading" align="center">Create your short URL</div>
       <div class="panel-body">
+      	<c:if test="${not empty message}">
+			<div class="alert alert-info col-md-6 col-md-offset-3 alert-dismissable">
+		        <a class="panel-close close" data-dismiss="alert">×</a> 
+				<p class="text-center">${ message }</p>
+			</div>
+		</c:if>
 		<c:if test="${not empty alert}">
-			<div class="alert alert-warning col-md-6 col-md-offset-3">
+			<div class="alert alert-warning col-md-6 col-md-offset-3 alert-dismissable">
+		        <a class="panel-close close" data-dismiss="alert">×</a> 
 				<p class="text-center">${ alert }</p>
 			</div>
 		</c:if>
 		<c:if test="${not empty shortUrl}">
-  				<div class="alert alert-success col-md-6 col-md-offset-3">
-						<p class="text-center"><a href="${ shortUrl }">${ shortUrl }</a></p>
-			</div>
+		<div class="alert alert-success col-md-6 col-md-offset-3 alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a>
+        <p class="text-center"><a href="${ shortUrl }">${ shortUrl }</a></p>
+        </div>
 		</c:if>
 				<div class="row">
 					<div class="col-md-6 col-md-offset-3">    
@@ -53,9 +55,11 @@
     
     <c:choose>
     <c:when test="${empty user}">
-        <div class="alert alert-info col-md-6 col-md-offset-3">
-				<p class="text-center">Please sign in or sign up to use advanced options!</p>
-			</div>
+    	<div class="alert alert-info alert-dismissable">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+         <p class="text-center">Please sign in or sign up to use advanced options!</p>
+        </div>
     </c:when>    
     <c:otherwise>  
     <div class="panel panel-default">

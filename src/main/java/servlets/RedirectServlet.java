@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.util.HashMap;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -19,7 +21,7 @@ public class RedirectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	UrlDao urlDao;
-	
+
 	@Inject
 	UrlUtil urlUtil;
 
@@ -29,78 +31,96 @@ public class RedirectServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		System.out.println(InetAddress.getLoopbackAddress());
 		String shortUrl = (String) request.getAttribute("url");
-		if (shortUrl == null) request.getParameter("shortUrl");
-
+		// if (shortUrl == null) shortUrl = request.getParameter("shortUrl");
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		String userAgent = request.getHeader("User-Agent");
+		UrlBean urlBean = null;
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+		}
 		if (shortUrl == null) {
 			response.sendRedirect("index");
-		} else if (shortUrl.endsWith("~s") || shortUrl.endsWith("!")) {
-			response.getWriter().append("TODO : here we will show stats for each short url");
+		} else if (shortUrl.endsWith("~s")) {
+			String splittedUrl = shortUrl.substring(0, shortUrl.length() - 2);
+			urlBean = urlDao.getUrl(splittedUrl);
+			if (urlBean == null) {
+				request.setAttribute("message", splittedUrl);
+				getServletContext().getRequestDispatcher("/WEB-INF/errorPage.jsp").forward(request, response);
+			} else {
+				request.setAttribute("statsUrl", splittedUrl);
+				getServletContext().getRequestDispatcher("/WEB-INF/urlStats.jsp").forward(request, response);
+			}
 		} else {
-			UrlBean bean = urlDao.getUrl(shortUrl);
-			if (bean == null) {
-				request.setAttribute("alert", "There is no such url: " + shortUrl);
-				getServletContext().getRequestDispatcher("/").forward(request, response);
-				
-//			}else if(!urlUtil.isLiveUrl(bean.getLongUrl())){
-//				request.setAttribute("alert", "This link died: " + bean.getLongUrl());
-//				getServletContext().getRequestDispatcher("/").forward(request, response);
-			} else if (bean.dateExpired()) {
+			urlBean = urlDao.getUrl(shortUrl);
+			if (urlBean == null) {
+				request.setAttribute("alert", shortUrl);
+				getServletContext().getRequestDispatcher("/WEB-INF/errorPage.jsp").forward(request, response);
+			} else if (urlBean.dateExpired()) {
 				request.setAttribute("alert", "Expired URL: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
-			} else if (bean.getPassword() != null || bean.isCaptcha()) {
-					request.setAttribute("shortUrl", shortUrl);
-					request.setAttribute("password", bean.getPassword() !=null);
-					request.setAttribute("captcha", bean.isCaptcha());
-					getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
-				
-			} else if (bean.getNbClicks() != null) {
-				if (bean.getNbClicks() <= 0) {
+			} else if (urlBean.getPassword() != null || urlBean.isCaptcha()) {
+				request.setAttribute("shortUrl", shortUrl);
+				request.setAttribute("password", urlBean.getPassword() != null);
+				request.setAttribute("captcha", urlBean.isCaptcha());
+				getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
+			} else if (urlBean.getTotalClicks() != null) {
+				if (urlBean.getNbClicks() >= urlBean.getTotalClicks()) {
 					request.setAttribute("alert", "Number of visits on this URL was expired: " + shortUrl);
 					getServletContext().getRequestDispatcher("/").forward(request, response);
 				} else {
-					bean.decreaseNbClicks();
-					urlDao.updateUrl(bean);
-					response.sendRedirect(bean.getLongUrl());
+					urlBean.increaseNbClicks();
+					urlDao.updateUrl(urlBean);
+					urlUtil.putStats(urlBean.getShortUrl(), ipAddress, userAgent);
+					response.sendRedirect(urlBean.getLongUrl());
 				}
 			} else {
-				response.sendRedirect(bean.getLongUrl());
+				urlBean.increaseNbClicks();
+				urlDao.updateUrl(urlBean);
+				urlUtil.putStats(urlBean.getShortUrl(), ipAddress, userAgent);
+				response.sendRedirect(urlBean.getLongUrl());
 			}
 		}
 	}
 
-	// String ipAddress = request.getHeader("X-FORWARDED-FOR");
-	// if (ipAddress == null) {
-	// ipAddress = request.getRemoteAddr();
-	// }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String shortUrl = (String) request.getParameter("url");
 		String urlPassword = (String) request.getParameter("urlPassword");
 		String captchaResponse = request.getParameter("g-recaptcha-response");
 		UrlBean bean = urlDao.getUrl(shortUrl);
+		String ipAddress = request.getHeader("X-FORWARDED-FOR");
+		if (ipAddress == null) {
+			ipAddress = request.getRemoteAddr();
+		}
+		String userAgent = request.getHeader("User-Agent");
 		if (urlPassword != null && !urlPassword.equals(bean.getPassword())) {
 			request.setAttribute("alert", "Wrong password! Please try again :)");
 			request.setAttribute("password", true);
 			request.setAttribute("captcha", captchaResponse != null);
 			request.setAttribute("shortUrl", shortUrl);
 			getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
-		}else if(captchaResponse != null && !CaptchaUtil.verify(captchaResponse)){
+		} else if (captchaResponse != null && !CaptchaUtil.verify(captchaResponse)) {
 			request.setAttribute("alert", "Please check \"I am not a robot\"! ");
 			request.setAttribute("password", urlPassword != null);
 			request.setAttribute("captcha", true);
 			request.setAttribute("shortUrl", shortUrl);
 			getServletContext().getRequestDispatcher("/WEB-INF/urlPasswordPage.jsp").forward(request, response);
-		}else if (bean.getNbClicks() != null) {
-			if (bean.getNbClicks() <= 0) {
+		} else if (bean.getTotalClicks() != null) {
+			if (bean.getNbClicks() >= bean.getTotalClicks()) {
 				request.setAttribute("alert", "Number of visits on this URL was expired: " + shortUrl);
 				getServletContext().getRequestDispatcher("/").forward(request, response);
 			} else {
-				bean.decreaseNbClicks();
+				bean.increaseNbClicks();
 				urlDao.updateUrl(bean);
+				urlUtil.putStats(bean.getShortUrl(), ipAddress, userAgent);
 				response.sendRedirect(bean.getLongUrl());
 			}
 		} else {
+			bean.increaseNbClicks();
+			urlDao.updateUrl(bean);
+			urlUtil.putStats(bean.getShortUrl(), ipAddress, userAgent);
 			response.sendRedirect(bean.getLongUrl());
 		}
 	}
