@@ -1,6 +1,7 @@
 <%@page import="javax.script.ScriptContext"%>
 <%@ page contentType="text/html;charset=utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %> 
 <style>
 	.table-responsive>.table>tbody>tr>td {
 	    vertical-align: middle;
@@ -34,7 +35,7 @@
 				<c:forEach var="url" items="${urlList}">
 					<tr id="row-${url.getShortUrl()}">
 						<td>${url.getShortUrl()}</td>
-						<td><a href="${url.getLongUrl()}">${url.getLongUrl()}</a></td>
+						<td><a href="${url.getLongUrl()}">${fn:substring(url.getLongUrl(), 0, 80)}...</a></td>
 						<td>${url.getCreateDate()}</td>
 						<td class="start">${url.getStartDate()}</td>
 						<td class="end">${url.getExpireDate()}</td>

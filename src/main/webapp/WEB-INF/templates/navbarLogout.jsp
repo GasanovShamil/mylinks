@@ -36,7 +36,7 @@
 			<li><a href="/mylinks/manageUrl">My URLs</a></li>
 			<li><a href="/mylinks/csvManager">Upload CSV</a></li>
 			<c:if test="${ user.isAdmin() }">
-    				<li><a href="#">Admin</a></li>
+    				<li><a href="/mylinks/stats">Stats</a></li>
 			</c:if>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">

@@ -78,6 +78,16 @@ function generateGroupBarChart(container, title, data) {
 				barDirection : 'horizontal'
 			}
 		},
+		 series:[
+	            {label:'Chrome'},{label:'Mozilla'},
+	            {label:'Safari'},{label:'Internet Explorer'}
+	            ],
+
+	             legend: {
+	                  show: true,
+	                  location: 'e',
+	                fontSize: '11px'
+	            }, 
 		axes : {
 			yaxis : {
 				renderer : $.jqplot.CategoryAxisRenderer
@@ -120,14 +130,14 @@ function generateTable(container, data) {
 				return d.value;
 		})
 		.filter(function (d) {
-			return (d.column == 'Most visited by');
+			return (d.column == 'Most visited by' && d.value !='');
 		})
 		.append(function(d) {
 			var flag = 'flags/' + d.value + '.png';
 			
 			var image = document.createElement("img");
 			image.setAttribute('src', flag);
-			image.setAttribute('alt', d.value);
+			image.setAttribute('title', d.value);
 			image.setAttribute("width", "30px");
 			image.setAttribute("height", "30px");
 			

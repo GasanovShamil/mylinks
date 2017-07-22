@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import beans.UrlBean;
+import beans.UserBean;
 import dao.StatsDao;
 import dao.UrlDao;
 
@@ -42,7 +44,13 @@ public class StatsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		getServletContext().getRequestDispatcher("/WEB-INF/globalStats.jsp").forward(request, response);
+		UserBean user = (UserBean) request.getSession().getAttribute("user");
+		if (user == null || !user.isAdmin()) {
+			response.sendRedirect("index");
+		} else {
+			getServletContext().getRequestDispatcher("/WEB-INF/globalStats.jsp").forward(request, response);
+		}
+		
 	}
 
 	/**

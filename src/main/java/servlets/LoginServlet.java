@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 
 import beans.UserBean;
 import dao.UserDao;
-import utils.Database;
 import utils.HibernateUtil;
 import utils.PasswordUtil;
 
